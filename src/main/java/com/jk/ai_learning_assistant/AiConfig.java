@@ -1,7 +1,9 @@
 package com.jk.ai_learning_assistant;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,5 +21,11 @@ public class AiConfig {
                         """)
                 .defaultAdvisors(new SimpleLoggerAdvisor())
                 .build();
+    }
+
+    // Remembers past messages per conversationId (ChatMemory is auto-configured, in-memory).
+    @Bean
+    MessageChatMemoryAdvisor memoryAdvisor(ChatMemory chatMemory) {
+        return MessageChatMemoryAdvisor.builder(chatMemory).build();
     }
 }
